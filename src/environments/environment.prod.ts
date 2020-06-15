@@ -6,7 +6,7 @@
  * the root directory of this source tree.
  */
 
-import { Environment } from './environment.model';
+import { Environment } from './enviorement.model';
 
 import config from '../configs/config.json';
 

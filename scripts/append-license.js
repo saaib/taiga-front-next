@@ -70,30 +70,18 @@ function prepend(filepath, text) {
   });
 }
 
-console.info(" > Checking misseed license prephaces... ");
-
 const files = findFiles(ROOT);
-let fixed = 0;
 
 for (let filepath of files) {
-  const data = fs.readFileSync(filepath);
+  fs.readFile(filepath, function (err, data) {
+    if (err) throw err;
 
-  if (!data.includes(SEARCH_TEXT)) {
-    const filename = path.basename(filepath);
-    let license = getLicense();
-    license = getCommentedText(license, path.extname(filename));
+    if (!data.includes(SEARCH_TEXT)) {
+      const filename = path.basename(filepath);
+      let license = getLicense();
+      license = getCommentedText(license, path.extname(filename));
 
-    prepend(filepath, license);
-
-    console.info("     Add license prephace to", "\033[1;96m", filepath, "\033[0;0m");
-    fixed++;
-  }
-}
-
-if (fixed === 0) {
-  console.info("   ...\033[1;32m", "ALL OK", "\033[0;0m");
-  process.exit(0);
-} else {
-  console.error("   ...\033[1;31m", `${fixed}`, "\033[0;0m fixed");
-  process.exit(1);
+      prepend(filepath, license);
+    }
+  });
 }

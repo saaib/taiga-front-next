@@ -6,11 +6,8 @@
  * the root directory of this source tree.
  */
 
-describe('Playground', () => {
-
-  it('loads examples', () => {
-    const baseUrl = 'http://localhost:4200';
-    cy.visit(baseUrl);
-    cy.contains('Taiga');
-  });
+it('loads examples', () => {
+  const baseUrl = 'http://localhost:4200';
+  cy.visit(baseUrl);
+  cy.contains('taiga');
 });
