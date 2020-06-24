@@ -1,7 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '@/app/config.service';
-import { Userstory, UserstoryList, UserstoryFilter, UserstoryCreationData, UserStoryFiltersData, UserstoryVoter } from './userstories.model';
+import {
+  Userstory,
+  UserstoryList,
+  UserstoryFilter,
+  UserstoryCreationData,
+  UserStoryFiltersData,
+  UserstoryVoter
+} from './userstories.model';
+import { UtilsService } from '@/app/commons/utils/utils-service.service';
+import { UserstoryWatcher, Attachment, AttachmentCreationData } from './userstories.model';
 
 @Injectable()
 export class UserstoriesApiService {
@@ -12,10 +21,9 @@ export class UserstoriesApiService {
   }
 
   public list(filter: Partial<UserstoryFilter>) {
-    // todo
-    return this.http.get<UserstoryList[]>(`${this.base}/?${new URLSearchParams({
-      project: filter.project!.toString(),
-    })}`);
+    return this.http.get<UserstoryList[]>(this.base, {
+      params: UtilsService.buildQueryParams(filter),
+    });
   }
 
   public create(newProject: UserstoryCreationData) {
@@ -27,10 +35,12 @@ export class UserstoriesApiService {
   }
 
   public getByRef(project: number, ref: number) {
-    return this.http.get<Userstory>(`${this.base}/?${new URLSearchParams({
-      project: project.toString(),
-      ref: ref.toString(),
-    })}`);
+    return this.http.get<Userstory>(this.base, {
+      params: UtilsService.buildQueryParams({
+        project,
+        ref,
+      }),
+    });
   }
 
   public put(id: number, us: Partial<Userstory>) {
@@ -83,9 +93,11 @@ export class UserstoriesApiService {
   }
 
   public filtersData(project: number) {
-    return this.http.get<UserStoryFiltersData>(`${this.base}/filters_data?${new URLSearchParams({
-      project: project.toString(),
-    })}`);
+    return this.http.get<UserStoryFiltersData>(`${this.base}/filters_data`, {
+      params: UtilsService.buildQueryParams({
+        project,
+      }),
+    });
   }
 
   public upvote(id: number) {
@@ -98,5 +110,103 @@ export class UserstoriesApiService {
 
   public voters(id: number) {
     return this.http.get<UserstoryVoter[]>(`${this.base}/${id}/voters`);
+  }
+
+  public watch(id: number) {
+    return this.http.get(`${this.base}/${id}/watch`);
+  }
+
+  public unwatch(id: number) {
+    return this.http.get(`${this.base}/${id}/unwatch`);
+  }
+
+  public watchers(id: number) {
+    return this.http.get<UserstoryWatcher>(`${this.base}/${id}/watchers`);
+  }
+
+  public attachments(projectId: number, objectId: number) {
+    return this.http.get<Attachment[]>(`${this.base}/attachments`, {
+      params: UtilsService.buildQueryParams({
+        project: projectId,
+        object_id: objectId,
+      }),
+    });
+  }
+
+  public createAttachment(attachment: AttachmentCreationData) {
+    const formData = new FormData();
+    formData.append('object_id', attachment.object_id.toString());
+    formData.append('project', attachment.project.toString());
+    formData.append('attached_file', attachment.attached_file, attachment.attached_file.name);
+
+    if (attachment.description) {
+      formData.append('description', attachment.description);
+    }
+
+    if (attachment.is_deprecated) {
+      formData.append('is_deprecated', attachment.is_deprecated.toString());
+    }
+
+    return this.http.post<Attachment>(`${this.base}/attachments`, formData);
+  }
+
+  public getAttachment(attachmentId: number) {
+    return this.http.get<Attachment>(`${this.base}/attachments/${attachmentId}`);
+  }
+
+  public putAttachment(id: number, attachment: Partial<AttachmentCreationData>) {
+    const formData = new FormData();
+
+    if (attachment.object_id) {
+      formData.append('object_id', attachment.object_id.toString());
+    }
+
+    if (attachment.project) {
+      formData.append('project', attachment.project.toString());
+    }
+
+    if (attachment.attached_file) {
+      formData.append('attached_file', attachment.attached_file, attachment.attached_file.name);
+    }
+
+    if (attachment.description) {
+      formData.append('description', attachment.description);
+    }
+
+    if (attachment.is_deprecated) {
+      formData.append('is_deprecated', attachment.is_deprecated.toString());
+    }
+
+    return this.http.put<Attachment>(`${this.base}/attachments${id}`, formData);
+  }
+
+  public patchAttachment(id: number, attachment: Partial<AttachmentCreationData>) {
+    const formData = new FormData();
+
+    if (attachment.object_id) {
+      formData.append('object_id', attachment.object_id.toString());
+    }
+
+    if (attachment.project) {
+      formData.append('project', attachment.project.toString());
+    }
+
+    if (attachment.attached_file) {
+      formData.append('attached_file', attachment.attached_file, attachment.attached_file.name);
+    }
+
+    if (attachment.description) {
+      formData.append('description', attachment.description);
+    }
+
+    if (attachment.is_deprecated) {
+      formData.append('is_deprecated', attachment.is_deprecated.toString());
+    }
+
+    return this.http.put<Attachment>(`${this.base}/attachments${id}`, formData);
+  }
+
+  public deleteAttachment(attachmentId: number) {
+    return this.http.delete(`${this.base}/attachments/${attachmentId}`);
   }
 }

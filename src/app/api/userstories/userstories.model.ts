@@ -1,4 +1,5 @@
 import { User } from '@/app/api/users/users.model';
+import { Optional } from 'utility-types';
 
 export interface UserstoryFilter {
   project: number;
@@ -182,4 +183,35 @@ export interface UserStoryFiltersData {
   }[];
 }
 
-export type UserstoryVoter  = Pick<User, 'full_name' | 'id' | 'username'>;
+export type UserstoryVoter = Pick<User, 'full_name' | 'id' | 'username'>;
+export type UserstoryWatcher = Pick<User, 'full_name' | 'id' | 'username'>;
+
+export interface Attachment {
+  attached_file: string;
+  created_date: string;
+  description: string;
+  from_comment: boolean;
+  id: number;
+  is_deprecated: boolean;
+  modified_date: string;
+  name: string;
+  object_id: number;
+  order: number;
+  owner: number;
+  preview_url: string;
+  project: number;
+  sha1: string;
+  size: number;
+  thumbnail_card_url: null | string;
+  url: string;
+}
+
+export type AttachmentCreationData = Optional<{
+  attached_file: File;
+} & Pick<Attachment,
+  'object_id' |
+  'project' |
+  'description' |
+  'is_deprecated'>,
+  'description' |
+  'is_deprecated'>;
