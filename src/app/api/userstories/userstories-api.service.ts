@@ -57,38 +57,38 @@ export class UserstoriesApiService {
 
   public bulkCreation(projectId: number, stories: string, statusId?: number) {
     return this.http.post<Userstory[]>(`${this.base}/bulk_create`, {
-      project_id: projectId,
-      bulk_stories: stories,
-      ...(statusId && { status_id: statusId }),
+      projectId,
+      bulkStories: stories,
+      ...(statusId && { statusId }),
     });
   }
 
-  public bulkUpdateBacklogOrder(projectId: number, bulkStories: {order: number; us_id: number}[]) {
+  public bulkUpdateBacklogOrder(projectId: number, bulkStories: {order: number; usId: number}[]) {
     return this.http.post<Userstory[]>(`${this.base}/bulk_update_backlog_order`, {
-      project_id: projectId,
-      bulk_stories: bulkStories,
+      projectId,
+      bulkStories,
     });
   }
 
-  public bulkUpdateKanbanOrder(projectId: number, bulkStories: {order: number; us_id: number}[]) {
+  public bulkUpdateKanbanOrder(projectId: number, bulkStories: {order: number; usId: number}[]) {
     return this.http.post<Userstory[]>(`${this.base}/bulk_update_kanban_order`, {
-      project_id: projectId,
-      bulk_stories: bulkStories,
+      projectId,
+      bulkStories,
     });
   }
 
-  public bulkUpdateSprintOrder(projectId: number, bulkStories: {order: number; us_id: number}[]) {
+  public bulkUpdateSprintOrder(projectId: number, bulkStories: {order: number; usId: number}[]) {
     return this.http.post<Userstory[]>(`${this.base}/bulk_update_sprint_order`, {
-      project_id: projectId,
-      bulk_stories: bulkStories,
+      projectId,
+      bulkStories,
     });
   }
 
-  public bulkUpdateMilestone(projectId: number, milestoneId: number, bulkStories: {order: number; us_id: number}[]) {
+  public bulkUpdateMilestone(projectId: number, milestoneId: number, bulkStories: {order: number; usId: number}[]) {
     return this.http.post(`${this.base}/bulk_update_sprint_order`, {
-      project_id: projectId,
-      milestone_id: milestoneId,
-      bulk_stories: bulkStories,
+      projectId,
+      milestoneId,
+      bulkStories,
     });
   }
 
@@ -128,23 +128,23 @@ export class UserstoriesApiService {
     return this.http.get<Attachment[]>(`${this.base}/attachments`, {
       params: UtilsService.buildQueryParams({
         project: projectId,
-        object_id: objectId,
+        objectId,
       }),
     });
   }
 
   public createAttachment(attachment: AttachmentCreationData) {
     const formData = new FormData();
-    formData.append('object_id', attachment.object_id.toString());
+    formData.append('objectId', attachment.objectId.toString());
     formData.append('project', attachment.project.toString());
-    formData.append('attached_file', attachment.attached_file, attachment.attached_file.name);
+    formData.append('attachedFile', attachment.attachedFile, attachment.attachedFile.name);
 
     if (attachment.description) {
       formData.append('description', attachment.description);
     }
 
-    if (attachment.is_deprecated) {
-      formData.append('is_deprecated', attachment.is_deprecated.toString());
+    if (attachment.isDeprecated) {
+      formData.append('isDeprecated', attachment.isDeprecated.toString());
     }
 
     return this.http.post<Attachment>(`${this.base}/attachments`, formData);
@@ -157,24 +157,24 @@ export class UserstoriesApiService {
   public putAttachment(id: number, attachment: Partial<AttachmentCreationData>) {
     const formData = new FormData();
 
-    if (attachment.object_id) {
-      formData.append('object_id', attachment.object_id.toString());
+    if (attachment.objectId) {
+      formData.append('objectId', attachment.objectId.toString());
     }
 
     if (attachment.project) {
       formData.append('project', attachment.project.toString());
     }
 
-    if (attachment.attached_file) {
-      formData.append('attached_file', attachment.attached_file, attachment.attached_file.name);
+    if (attachment.attachedFile) {
+      formData.append('attachedFile', attachment.attachedFile, attachment.attachedFile.name);
     }
 
     if (attachment.description) {
       formData.append('description', attachment.description);
     }
 
-    if (attachment.is_deprecated) {
-      formData.append('is_deprecated', attachment.is_deprecated.toString());
+    if (attachment.isDeprecated) {
+      formData.append('isDeprecated', attachment.isDeprecated.toString());
     }
 
     return this.http.put<Attachment>(`${this.base}/attachments${id}`, formData);
@@ -183,24 +183,24 @@ export class UserstoriesApiService {
   public patchAttachment(id: number, attachment: Partial<AttachmentCreationData>) {
     const formData = new FormData();
 
-    if (attachment.object_id) {
-      formData.append('object_id', attachment.object_id.toString());
+    if (attachment.objectId) {
+      formData.append('object_id', attachment.objectId.toString());
     }
 
     if (attachment.project) {
       formData.append('project', attachment.project.toString());
     }
 
-    if (attachment.attached_file) {
-      formData.append('attached_file', attachment.attached_file, attachment.attached_file.name);
+    if (attachment.attachedFile) {
+      formData.append('attached_file', attachment.attachedFile, attachment.attachedFile.name);
     }
 
     if (attachment.description) {
       formData.append('description', attachment.description);
     }
 
-    if (attachment.is_deprecated) {
-      formData.append('is_deprecated', attachment.is_deprecated.toString());
+    if (attachment.isDeprecated) {
+      formData.append('isDeprecated', attachment.isDeprecated.toString());
     }
 
     return this.http.put<Attachment>(`${this.base}/attachments${id}`, formData);

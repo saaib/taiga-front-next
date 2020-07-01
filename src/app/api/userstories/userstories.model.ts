@@ -78,7 +78,7 @@ export interface Userstory {
   owner: number;
   ownerExtraInfo: Pick<User,
     'bigPhoto' |
-    'fulNameDisplay' |
+    'fullNameDisplay' |
     'gravatarId' |
     'id' |
     'isActive' |
@@ -103,7 +103,7 @@ export interface Userstory {
   subject: string;
   tags: [string, string | null][];
   tasks: number[];
-  team_requirement: boolean;
+  teamRequirement: boolean;
   totalAttachments: number;
   totalComments: number;
   totalPoints: number;
@@ -115,39 +115,39 @@ export interface Userstory {
 }
 
 export type UserstoryCreationData = Pick<Userstory,
-  'assigned_to' |
-  'backlog_order' |
-  'blocked_note' |
-  'client_requirement' |
+  'assignedTo' |
+  'backlogOrder' |
+  'blockedNote' |
+  'clientRequirement' |
   'description' |
-  'is_blocked' |
-  'is_closed' |
-  'kanban_order' |
+  'isBlocked' |
+  'isClosed' |
+  'kanbanOrder' |
   'milestone' |
   'points' |
   'project' |
-  'sprint_order' |
+  'sprintOrder' |
   'status' |
   'subject' |
   'tags' |
-  'team_requirement' |
+  'teamRequirement' |
   'watchers'>;
 
 export type UserstoryList  = Omit<Userstory,
-  'blocked_note_html' |
+  'blockedNoteHtml' |
   'description' |
-  'description_html' |
+  'descriptionHtml' |
   'neighbors'>;
 
 export interface UserStoryFiltersData {
-  assigned_to: {
+  assignedTo: {
     count: number;
-    full_name: string;
+    fullName: string;
     id: null | number;
   }[];
-  assigned_users: {
+  assignedUsers: {
     count: number;
-    full_name: string;
+    fullName: string;
     id: null | number;
   }[];
   epics: {
@@ -159,7 +159,7 @@ export interface UserStoryFiltersData {
   }[];
   owners: {
     count: number;
-    full_name: string;
+    fullName: string;
     id: number;
   }[];
   roles: {
@@ -183,35 +183,35 @@ export interface UserStoryFiltersData {
   }[];
 }
 
-export type UserstoryVoter = Pick<User, 'full_name' | 'id' | 'username'>;
-export type UserstoryWatcher = Pick<User, 'full_name' | 'id' | 'username'>;
+export type UserstoryVoter = Pick<User, 'fullName' | 'id' | 'username'>;
+export type UserstoryWatcher = Pick<User, 'fullName' | 'id' | 'username'>;
 
 export interface Attachment {
-  attached_file: string;
-  created_date: string;
+  attachedFile: string;
+  createdDate: string;
   description: string;
-  from_comment: boolean;
+  fromComment: boolean;
   id: number;
-  is_deprecated: boolean;
+  isDeprecated: boolean;
   modified_date: string;
   name: string;
-  object_id: number;
+  objectId: number;
   order: number;
   owner: number;
-  preview_url: string;
+  previewUrl: string;
   project: number;
   sha1: string;
   size: number;
-  thumbnail_card_url: null | string;
+  thumbnailCardUrl: null | string;
   url: string;
 }
 
 export type AttachmentCreationData = Optional<{
-  attached_file: File;
+  attachedFile: File;
 } & Pick<Attachment,
-  'object_id' |
+  'objectId' |
   'project' |
   'description' |
-  'is_deprecated'>,
+  'isDeprecated'>,
   'description' |
-  'is_deprecated'>;
+  'isDeprecated'>;
