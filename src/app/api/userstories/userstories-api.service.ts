@@ -84,7 +84,7 @@ export class UserstoriesApiService {
     });
   }
 
-  public bulkUpdateMilestone(projectId: number, milestoneId: number, bulkStories: {order: number; usId: number}[]) {
+  public bulkUpdateMilestoneOrder(projectId: number, milestoneId: number, bulkStories: {order: number; usId: number}[]) {
     return this.http.post(`${this.base}/bulk_update_sprint_order`, {
       projectId,
       milestoneId,

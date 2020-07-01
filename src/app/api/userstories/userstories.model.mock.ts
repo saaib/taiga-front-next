@@ -1,11 +1,11 @@
 import * as Factory from 'factory.ts';
 import * as faker from 'faker';
 import { UserMockFactory } from '@/app/api/users/users.model.mock';
-import { Userstory, UserstoryCreationData } from './userstories.model';
+import { Userstory, UserstoryCreationData, AttachmentCreationData } from './userstories.model';
 
 const user = UserMockFactory.build();
 
-export const UserstoriesMockFactory = Factory.Sync.makeFactory<Userstory>({
+export const UserstoryMockFactory = Factory.Sync.makeFactory<Userstory>({
   assignedTo: faker.random.number(),
   assignedToExtraInfo: {
     bigPhoto: user.bigPhoto,
@@ -138,4 +138,12 @@ export const UserstoryCreationDataMockFactory = Factory.Sync.makeFactory<Usersto
   ],
   teamRequirement: faker.random.boolean(),
   watchers: [faker.random.number()],
+});
+
+export const UserstoryAttachmentCreationMockFactory = Factory.Sync.makeFactory<AttachmentCreationData>({
+  objectId: faker.random.number(),
+  project: faker.random.number(),
+  attachedFile: new File([], faker.random.word()),
+  description: faker.lorem.sentence(),
+  isDeprecated: faker.random.boolean(),
 });
